@@ -19,8 +19,8 @@
 </script>
 
 {#if sections}
-<div class="flex h-full flex-col">
-  <textarea class="flex-grow" bind:value={sections} />
+<div class="container p-4 flex flex-col mx-auto space-y-2 h-full">
+  <textarea class="flex-auto" bind:value={sections} />
   <button class="btn btn-filled-primary" on:click={edit}>Edit</button>
 </div>
 {/if}

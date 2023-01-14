@@ -35,6 +35,7 @@
 <svelte:head>
   {@html webManifest}
 </svelte:head>
+<div class="flex flex-col h-full">
 <AppBar class="hidden sm:flex">
   <svelte:fragment slot="lead">
     <strong class="text-2xl">Polaris</strong>
@@ -53,7 +54,10 @@
     <LightSwitch />
   </svelte:fragment>
 </AppBar>
+<div class="flex-grow">
 <slot />
+</div>
 <Toast />
 <Modal />
 <BottomBar />
+</div>
