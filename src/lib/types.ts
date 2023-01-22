@@ -1,7 +1,11 @@
-import type { Database } from "$lib/database";
-export type Scout = Database["public"]["Tables"]["scouts"]["Row"];
-export type Team = Database["public"]["Tables"]["teams"]["Row"];
-export type Response = Database["public"]["Tables"]["responses"]["Row"];
+export type Response = {
+  data: Record<string, string | number>;
+  form: number;
+  id: number;
+  name: string;
+  scout: string;
+  team: string;
+}
 export type Num = {
   type: "num";
   min: number;
@@ -20,7 +24,7 @@ export type Text = {
   type: "text";
   maxlength: number;
   password: boolean;
-  default: string;
+  default?: string;
   charset: string;
   valueID: string;
 };
@@ -31,8 +35,6 @@ export type Timer = {
 };
 export type Toggle = {
   type: "toggle";
-  falseLabel: string;
-  trueLabe: string;
   valueID: string;
 };
 
