@@ -6,10 +6,10 @@
   export let component: Text;
   export let error: string | undefined;
   $: {
-    if ($activeResponses[id].data[component.valueID] === undefined) {
-      $activeResponses[id].data[component.valueID] = "";
+    if ($activeResponses[id].data[component.id] === undefined) {
+      $activeResponses[id].data[component.id] = "";
     }
-    const text = $activeResponses[id].data[component.valueID] as string;
+    const text = $activeResponses[id].data[component.id] as string;
     if (text.length > component.maxlength) {
       error = `Text can't be longer then ${component.maxlength} characters`;
     } else if (
@@ -22,4 +22,4 @@
   }
 </script>
 
-<input type="text" bind:value={$activeResponses[id].data[component.valueID]} />
+<input type="text" bind:value={$activeResponses[id].data[component.id]} />

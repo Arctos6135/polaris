@@ -2,10 +2,10 @@
   import generatePath from "$lib//third_party/generatePath";
   import { serialize } from "$lib/serialize";
   import { Ecc, QrCode, QrSegment } from "$lib/third_party/qrcodegen";
-  import type { Form, Response } from "$lib/types";
+  import type { Response } from "$lib/types";
+  import { form } from "$lib/store";
 
   export let response: Response;
-  export let form: Form;
   function toUtf8ByteArray(str: string): Array<number> {
     str = encodeURI(str);
     const result: Array<number> = [];
@@ -21,11 +21,10 @@
   let qr: boolean[][];
   $: {
     try {
-      const serializedData = serialize(response.data, form.sections);
+      const serializedData = serialize(response.data, $form.sections);
       const segments = [
         QrSegment.makeNumeric(response.id.toString()),
         QrSegment.makeBytes(toUtf8ByteArray(";" + response.name + ";")),
-        QrSegment.makeNumeric(response.form.toString()),
         QrSegment.makeBytes(toUtf8ByteArray(";" + response.scout + ";")),
         QrSegment.makeNumeric(serializedData.toString()),
       ];

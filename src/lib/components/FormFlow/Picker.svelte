@@ -7,7 +7,7 @@
   export let component: Picker;
 </script>
 
-<select bind:value={$activeResponses[id].data[component.valueID]}>
+<select bind:value={$activeResponses[id].data[component.id]}>
   {#each component.options as option (option)}
     <option value={option}>{option}</option>
   {/each}

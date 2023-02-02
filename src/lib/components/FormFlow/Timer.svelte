@@ -11,12 +11,10 @@
   let initialTime = 0;
   const startTimer = () => {
     startTime = Date.now();
-    initialTime = parseInt(
-      $activeResponses[id].data[component.valueID].toString()
-    );
+    initialTime = parseInt($activeResponses[id].data[component.id].toString());
     intervalRef = setInterval(() => {
       endTime = Date.now();
-      $activeResponses[id].data[component.valueID] =
+      $activeResponses[id].data[component.id] =
         initialTime + endTime - startTime;
     }, 100);
   };
@@ -27,23 +25,21 @@
   const restartTimer = () => {
     clearInterval(intervalRef);
     intervalRef = undefined;
-    $activeResponses[id].data[component.valueID] = 0;
+    $activeResponses[id].data[component.id] = 0;
   };
-  $: if ($activeResponses[id].data[component.valueID] === undefined) {
-    $activeResponses[id].data[component.valueID] = 0;
+  $: if ($activeResponses[id].data[component.id] === undefined) {
+    $activeResponses[id].data[component.id] = 0;
   }
   $: readableTime = (
-    parseFloat($activeResponses[id].data[component.valueID].toString()) / 1000
+    parseFloat($activeResponses[id].data[component.id].toString()) / 1000
   ).toFixed(2);
   const onChange = (e: any) => {
-    $activeResponses[id].data[component.valueID] = isNaN(
-      parseFloat(e.target.value)
-    )
+    $activeResponses[id].data[component.id] = isNaN(parseFloat(e.target.value))
       ? 0
       : Math.floor(parseFloat(e.target.value) * 1000);
   };
   $: editableTime =
-    parseFloat($activeResponses[id].data[component.valueID].toString()) / 1000;
+    parseFloat($activeResponses[id].data[component.id].toString()) / 1000;
 </script>
 
 <div class="gap-y-2 items-center flex flex-col">

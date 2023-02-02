@@ -1,4 +1,4 @@
-import type { Section, Group, ComponentMap, Row } from "$lib/types";
+import type { Section, Group, ComponentMap } from "$lib/types";
 
 const serializers: {
   [T in keyof ComponentMap]: (
@@ -52,14 +52,9 @@ function extractGroups(schema: Section[]): Group[] {
     groups.push(group);
   };
 
-  const processRow = (row: Row) => {
-    for (const g of row.components) processGroup(g);
-  };
-
   const processSection = (section: Section) => {
     for (const g of section.groups) {
-      if (g.type == "group") processGroup(g);
-      else if (g.type == "row") processRow(g);
+      processGroup(g);
     }
   };
 
@@ -76,7 +71,7 @@ export function serialize(
   const processGroup = (group: Group) => {
     const serialize = serializers[group.component.type];
     out = serialize(
-      data[group.component.valueID] as never,
+      data[group.component.id] as never,
       out,
       group.component as never
     );
@@ -143,7 +138,7 @@ export function deserialize(data: bigint, schema: Section[]) {
   const processGroup = (group: Group) => {
     const deserialize = deserializers[group.component.type];
     const res = deserialize(data, group.component as never);
-    out[group.component.valueID] = res.data;
+    out[group.component.id] = res.data;
     data = res.remaining;
   };
 

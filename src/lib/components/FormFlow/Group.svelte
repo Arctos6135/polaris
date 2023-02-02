@@ -23,5 +23,4 @@
   <span>{group.label}</span>
   <Component bind:error {component} />
   <span class="text-error-400-500-token">{error || ""}</span>
-  <span>{group.description || ""}</span>
 </div>

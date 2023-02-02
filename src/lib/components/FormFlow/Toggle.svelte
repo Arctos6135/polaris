@@ -4,16 +4,15 @@
   import { SlideToggle } from "@skeletonlabs/skeleton";
   import { getContext } from "svelte";
 
-  $: if ($activeResponses[id].data[component.valueID] === undefined) {
-    $activeResponses[id].data[component.valueID] = 0;
+  $: if ($activeResponses[id].data[component.id] === undefined) {
+    $activeResponses[id].data[component.id] = 0;
   }
   const id = getContext<number>("id");
   export let component: Toggle;
-  let checked = $activeResponses[id].data[component.valueID] == 1;
+  let checked = $activeResponses[id].data[component.id] == 1;
 </script>
 
 <SlideToggle
   bind:checked
-  on:change={() =>
-    ($activeResponses[id].data[component.valueID] = checked ? 1 : 0)}
+  on:change={() => ($activeResponses[id].data[component.id] = checked ? 1 : 0)}
 />

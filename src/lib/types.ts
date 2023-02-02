@@ -1,24 +1,22 @@
 export type Response = {
   data: Record<string, string | number>;
-  form: number;
   id: number;
   name: string;
   scout: string;
-  team: string;
-}
+};
 export type Num = {
   type: "num";
   min: number;
   max: number;
   increment: number;
   default?: number;
-  valueID: string;
+  id: string;
 };
 export type Picker = {
   type: "picker";
   options: string[];
   default?: string;
-  valueID: string;
+  id: string;
 };
 export type Text = {
   type: "text";
@@ -26,16 +24,16 @@ export type Text = {
   password: boolean;
   default?: string;
   charset: string;
-  valueID: string;
+  id: string;
 };
 export type Timer = {
   type: "timer";
   max: number;
-  valueID: string;
+  id: string;
 };
 export type Toggle = {
   type: "toggle";
-  valueID: string;
+  id: string;
 };
 
 export type ComponentMap = {
@@ -51,23 +49,31 @@ export type Group = {
   type: "group";
   label: string;
   component: Component;
-  description?: string;
-};
-
-export type Row = {
-  type: "row";
-  components: Group[];
+  section: string;
 };
 
 export type Section = {
   type: "section";
+  id: string;
   header?: string;
-  groups: Array<Group | Row>;
+  groups: Array<Group>;
 };
 
 export type Form = {
   sections: Section[];
-  team: string;
-  id: number;
+};
+
+export type Team = {
+  number: number;
   name: string;
+};
+
+export type Alliance = [number, number, number];
+
+export type Match = {
+  number: number;
+  red_alliance: Alliance;
+  blue_alliance: Alliance;
+  red_score?: number;
+  blue_score?: number;
 };

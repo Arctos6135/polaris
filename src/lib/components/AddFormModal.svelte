@@ -1,10 +1,10 @@
 <script lang="ts">
   import { modalStore } from "@skeletonlabs/skeleton";
-  import { activeResponses, scout, forms } from "$lib/store";
+  import { activeResponses } from "$lib/store";
   import { randomID } from "$lib/id";
   const formData = {
+    scout: "",
     name: "",
-    form: 1,
   };
   // We've created a custom submit function to pass the response and close the modal.
   function onFormSubmit() {
@@ -13,10 +13,8 @@
       $activeResponses[id] = {
         name: formData.name,
         data: {},
-        form: formData.form,
         id: id,
-        team: $scout!.team,
-        scout: $scout!.id,
+        scout: formData.scout,
       };
       modalStore.close();
     }
@@ -39,12 +37,16 @@
       {/if}
     </label>
     <label>
-      <span>Form</span>
-      <select bind:value={formData.form}>
-        {#each $forms as form (form.id)}
-          <option value={form.id}>{form.name}</option>
-        {/each}
-      </select>
+      <span>Scout Name</span>
+      <input
+        type="text"
+        bind:value={formData.scout}
+        placeholder="Enter response name.."
+        required
+      />
+      {#if error}
+        <span class="color-error">Scout needs a name</span>
+      {/if}
     </label>
   </form>
   <footer class="modal-footer">

@@ -1,7 +1,7 @@
 <script lang="ts">
   import QrScanner from "qr-scanner";
   import { onMount } from "svelte";
-  import { forms, scout, responseQueue, responses } from "$lib/store";
+  import { form, responseQueue } from "$lib/store";
   import { deserialize } from "$lib/serialize";
   import type { Response } from "$lib/types";
   let video: HTMLVideoElement;
@@ -10,25 +10,19 @@
       video,
       (result) => {
         try {
-          const [responseIDString, name, formID, scoutID, serializedResponse] =
+          const [responseIDString, name, scoutName, serializedResponse] =
             result.data.split(";");
           const responseID = parseInt(responseIDString);
-          const form = $forms.find((form) => form.id === parseInt(formID));
           if (!form) return;
-          const data = deserialize(BigInt(serializedResponse), form.sections);
+          const data = deserialize(BigInt(serializedResponse), $form.sections);
           const response: Response = {
             data,
-            form: form.id,
             id: responseID,
             name,
-            team: $scout!.team,
-            scout: scoutID,
+            scout: scoutName,
           };
           if (
-            !$responseQueue
-              .map((response) => response.id)
-              .includes(responseID) &&
-            !$responses.map((response) => response.id).includes(responseID)
+            !$responseQueue.map((response) => response.id).includes(responseID)
           ) {
             $responseQueue = [...$responseQueue, response];
           }

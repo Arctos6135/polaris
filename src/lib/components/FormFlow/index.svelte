@@ -1,26 +1,25 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
-  import type { Form } from "$lib/types";
   import { deleteResponse, submitResponse } from "$lib/actions";
+  import { form } from "$lib/store";
   import { Tab, TabGroup } from "@skeletonlabs/skeleton";
   import { setContext } from "svelte";
   import { writable } from "svelte/store";
   import Section from "./Section.svelte";
 
   export let id: number;
-  export let form: Form;
   setContext("id", id);
-  let tab = writable(form.sections[0].header);
+  let tab = writable($form.sections[0].header);
 </script>
 
 <TabGroup selected={tab}>
-  {#each form.sections as section}
+  {#each $form.sections as section}
     <Tab value={section.header}>{section.header}</Tab>
   {/each}
 </TabGroup>
 <form class="mt-4 h-full">
   <div>
-    {#each form.sections as section}
+    {#each $form.sections as section}
       {#if section.header == $tab}
         <Section {section} />
       {/if}
