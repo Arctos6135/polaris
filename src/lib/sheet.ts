@@ -1,30 +1,36 @@
 import { form, lastGet, matches, teams } from "$lib/store";
 import type { Group, Team, Alliance, Match, Response } from "$lib/types";
+import { PUBLIC_API_URL } from "$env/static/public";
 
 export const get = async () => {
-  const response = await fetch(
-    "https://script.google.com/macros/s/AKfycbw8YjDK4o78zJoyolJN79rqpAY6UM-f8kCuPNQk8D-7ewSyjAYeQ57g6Bz7eQBPXRTfKQ/exec"
-  );
-  const {
-    matches: match_array,
-    teams: team_array,
-    sections,
-    options,
-    config,
-  }: Record<string, any[][]> = await response.json();
-  setForm(sections, config, options);
-  setMatches(match_array);
-  setTeams(team_array as [number, string][]);
-  lastGet.set(Date.now());
+  try {
+    const response = await fetch(PUBLIC_API_URL);
+    const {
+      matches: match_array,
+      teams: team_array,
+      sections,
+      options,
+      config,
+    }: Record<string, any[][]> = await response.json();
+    setForm(sections, config, options);
+    setMatches(match_array);
+    setTeams(team_array as [number, string][]);
+    lastGet.set(Date.now());
+    return true;
+  } catch {
+    return false;
+  }
 };
 
 export const append = async (responseQueue: Response[]) => {
-  const response = await fetch(
-    "https://script.google.com/macros/s/AKfycbw8YjDK4o78zJoyolJN79rqpAY6UM-f8kCuPNQk8D-7ewSyjAYeQ57g6Bz7eQBPXRTfKQ/exec",
-    {
+  try {
+    await fetch(PUBLIC_API_URL, {
       method: "POST",
       body: JSON.stringify(
         responseQueue.map((response) => [
+          response.team,
+          response.match,
+          response.scout,
           ...Object.values(response.data),
           response.id,
         ])
@@ -33,8 +39,11 @@ export const append = async (responseQueue: Response[]) => {
         "Content-Type": "application/json",
       },
       mode: "no-cors",
-    }
-  );
+    });
+    return true;
+  } catch {
+    return false;
+  }
 };
 const setForm = (
   sections: string[][],

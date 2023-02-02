@@ -1,9 +1,11 @@
 <script lang="ts">
-  import { activeResponses } from "$lib/store";
+  import { response, form } from "$lib/store";
   import FormFlow from "$lib/components/FormFlow/index.svelte";
-  import { page } from "$app/stores";
-
-  $: response = $activeResponses[parseInt($page.params.id)];
+  import FormsList from "$lib/components/FormsList.svelte";
 </script>
 
-<FormFlow id={response.id} />
+{#if $form && $response}
+  <FormFlow/>
+{:else}
+  <FormsList />
+{/if}

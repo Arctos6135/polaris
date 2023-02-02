@@ -1,6 +1,6 @@
 <script lang="ts">
   import QrScanner from "qr-scanner";
-  import { onMount } from "svelte";
+  import { onDestroy, onMount } from "svelte";
   import { form, responseQueue } from "$lib/store";
   import { deserialize } from "$lib/serialize";
   import type { Response } from "$lib/types";
@@ -9,8 +9,10 @@
     qrScanner = new QrScanner(
       video,
       (result) => {
+        if (!$form) return;
         try {
-          const [responseIDString, name, scoutName, serializedResponse] =
+        console.log(result.data)
+          const [responseIDString, match, team, scoutName, serializedResponse] =
             result.data.split(";");
           const responseID = parseInt(responseIDString);
           if (!form) return;
@@ -18,7 +20,8 @@
           const response: Response = {
             data,
             id: responseID,
-            name,
+            match: parseInt(match),
+            team: parseInt(team),
             scout: scoutName,
           };
           if (
@@ -34,6 +37,9 @@
     );
     qrScanner.start();
   });
+  onDestroy(() => {
+    qrScanner.stop()
+  })
   let qrScanner: QrScanner;
 </script>
 

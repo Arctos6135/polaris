@@ -5,7 +5,6 @@
   import { pwaInfo } from "virtual:pwa-info";
   import BottomBar from "$lib/components/BottomBar.svelte";
   import { append, get } from "$lib/sheet";
-  import Nav from "$lib/components/Nav.svelte";
 
   onMount(async () => {
     if (pwaInfo) {
@@ -33,7 +32,11 @@
       setTimeout(async () => {
         if ($responseQueue.length != 0) {
           const ids = $responseQueue.map((response) => response.id);
-          await append($responseQueue);
+          if (await append($responseQueue)) {
+            $responseQueue = $responseQueue.filter(
+              (response) => !ids.includes(response.id)
+            );
+          }
         }
         sync();
       }, 6000);
@@ -48,15 +51,11 @@
   {@html webManifest}
 </svelte:head>
 <div class="flex flex-col h-full">
-  <Nav>
-    <svelte:fragment slot="lead">
-      <strong class="text-2xl">Polaris</strong>
-    </svelte:fragment>
-    <svelte:fragment slot="trail">
-      <a class="btn btn-md" href="/">Home</a>
-      <a class="btn btn-base" href="/scan">Scan QR</a>
-    </svelte:fragment>
-  </Nav>
+  <div class="flex">
+    <strong class="text-2xl">Polaris</strong>
+    <a class="btn btn-md" href="/">Home</a>
+    <a class="btn btn-base" href="/scan">Scan QR</a>
+  </div>
   <div class="flex-grow">
     <slot />
   </div>

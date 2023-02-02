@@ -1,46 +1,60 @@
 <script lang="ts">
   import { goto } from "$app/navigation";
-  import { deleteResponse, submitResponse } from "$lib/actions";
-  import { form } from "$lib/store";
-  import { Tab, TabGroup } from "@skeletonlabs/skeleton";
+  import { response, form, activeResponses, responseQueue } from "$lib/store";
   import { setContext } from "svelte";
-  import { writable } from "svelte/store";
+  import Tabs from "../Tabs.svelte";
   import Section from "./Section.svelte";
 
-  export let id: number;
-  setContext("id", id);
-  let tab = writable($form.sections[0].header);
+  setContext("id", $response);
+
+  let tab = $form?.sections[0].id as string;
+
+  export const deleteResponse = () => {
+    if (!$response) return;
+    const res = $activeResponses;
+    delete res[$response];
+    $activeResponses = res;
+    $responseQueue = $responseQueue.filter((response) => response.id != $response);
+    goto("/", { replaceState: true });
+  };
+
+  export const submitResponse = () => {
+    if (!$response) return;
+    const responses = $activeResponses;
+    const res = responses[$response];
+    delete responses[$response];
+    $activeResponses = responses;
+    $responseQueue = [...$responseQueue, res];
+    $response = null;
+    goto("/", { replaceState: true });
+  };
 </script>
 
-<TabGroup selected={tab}>
-  {#each $form.sections as section}
-    <Tab value={section.header}>{section.header}</Tab>
-  {/each}
-</TabGroup>
-<form class="mt-4 h-full">
-  <div>
-    {#each $form.sections as section}
-      {#if section.header == $tab}
-        <Section {section} />
-      {/if}
-    {/each}
-  </div>
-  <div
-    class="flex justify-center absolute bottom-0 w-full py-4 bg-surface-200-700-token"
-  >
-    <button
-      class="btn btn-filled-error"
-      on:click={() => {
-        deleteResponse(id);
-        goto("/", { replaceState: true });
-      }}>Delete</button
+{#if $form && $response}
+  <Tabs
+    bind:tab
+    tabs={$form.sections.map((section) => ({
+      label: section.header,
+      id: section.id,
+    }))}
+  />
+  <form class="mt-4 h-full">
+    <div>
+      {#each $form.sections as section}
+        {#if section.id == tab}
+          <Section {section} />
+        {/if}
+      {/each}
+    </div>
+    <div
+      class="flex justify-center absolute bottom-0 w-full py-4 bg-surface-200-700-token"
     >
-    <button
-      class="btn btn-filled-success ml-2"
-      on:click={() => {
-        submitResponse(id);
-        goto("/", { replaceState: true });
-      }}>Submit</button
-    >
-  </div>
-</form>
+      <button class="btn btn-filled-error" on:click={deleteResponse}
+        >Delete</button
+      >
+      <button class="btn btn-filled-success ml-2" on:click={submitResponse}
+        >Submit</button
+      >
+    </div>
+  </form>
+{/if}

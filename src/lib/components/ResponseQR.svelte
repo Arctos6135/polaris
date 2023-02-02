@@ -19,12 +19,15 @@
     return result;
   }
   let qr: boolean[][];
-  $: {
+  $: if ($form) {
     try {
       const serializedData = serialize(response.data, $form.sections);
       const segments = [
         QrSegment.makeNumeric(response.id.toString()),
-        QrSegment.makeBytes(toUtf8ByteArray(";" + response.name + ";")),
+        QrSegment.makeBytes(toUtf8ByteArray(";")),
+        QrSegment.makeNumeric(response.match.toString()),
+        QrSegment.makeBytes(toUtf8ByteArray(";")),
+        QrSegment.makeNumeric(response.team.toString()),
         QrSegment.makeBytes(toUtf8ByteArray(";" + response.scout + ";")),
         QrSegment.makeNumeric(serializedData.toString()),
       ];

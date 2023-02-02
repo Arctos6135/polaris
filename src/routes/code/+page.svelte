@@ -1,10 +1,9 @@
 <script lang="ts">
-  import { responseQueue } from "$lib/store";
-  import { page } from "$app/stores";
+  import { code, responseQueue } from "$lib/store";
   import ResponseQr from "$lib/components/ResponseQR.svelte";
 
   $: response = $responseQueue.find(
-    (response) => response.id === parseInt($page.params.id)
+    (response) => response.id === $code
   );
 </script>
 

@@ -9,11 +9,11 @@ function doPost(request) {
       output.appendRow(response);
     });
     return ContentService.createTextOutput(
-      JSON.stringify({ result: "success" })
+      JSON.stringify({ success: true })
     ).setMimeType(ContentService.MimeType.JSON);
   } catch (e) {
     return ContentService.createTextOutput(
-      JSON.stringify({ result: "error", error: e })
+      JSON.stringify({ success: false })
     ).setMimeType(ContentService.MimeType.JSON);
   } finally {
     lock.releaseLock();
@@ -29,7 +29,7 @@ function doGet() {
     const config = sheet.getSheetByName("Polaris Config");
     const events = sheet.getSheetByName("Event Data");
     const response = {
-      result: "success",
+      success: true,
       sections: [],
       options: [],
       config: [],
@@ -56,7 +56,7 @@ function doGet() {
     ).setMimeType(ContentService.MimeType.JSON);
   } catch (e) {
     return ContentService.createTextOutput(
-      JSON.stringify({ result: "error", error: e })
+      JSON.stringify({ success: false })
     ).setMimeType(ContentService.MimeType.JSON);
   } finally {
     lock.releaseLock();

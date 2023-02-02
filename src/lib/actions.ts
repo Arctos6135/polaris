@@ -1,5 +1,5 @@
 import { get } from "svelte/store";
-import { activeResponses, responseQueue } from "$lib/store";
+import { activeResponses, response, responseQueue } from "$lib/store";
 
 export const deleteResponse = (id: number) => {
   const responses = get(activeResponses);
@@ -10,8 +10,9 @@ export const deleteResponse = (id: number) => {
 
 export const submitResponse = (id: number) => {
   const responses = get(activeResponses);
-  const response = responses[id];
+  const res = responses[id];
   delete responses[id];
   activeResponses.set(responses);
-  responseQueue.set([...get(responseQueue), response]);
+  responseQueue.set([...get(responseQueue), res]);
+  response.set(null);
 };

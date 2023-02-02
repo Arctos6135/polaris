@@ -1,7 +1,8 @@
 export type Response = {
   data: Record<string, string | number>;
   id: number;
-  name: string;
+  match: number;
+  team: number;
   scout: string;
 };
 export type Num = {
@@ -55,7 +56,7 @@ export type Group = {
 export type Section = {
   type: "section";
   id: string;
-  header?: string;
+  header: string;
   groups: Array<Group>;
 };
 
