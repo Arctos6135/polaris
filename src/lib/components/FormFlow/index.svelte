@@ -14,7 +14,9 @@
     const res = $activeResponses;
     delete res[$response];
     $activeResponses = res;
-    $responseQueue = $responseQueue.filter((response) => response.id != $response);
+    $responseQueue = $responseQueue.filter(
+      (response) => response.id != $response
+    );
     goto("/", { replaceState: true });
   };
 

@@ -7,7 +7,7 @@
 <div class="container flex flex-col space-y-4 mt-4 mx-auto h-full">
   <FormsList />
   <div class="card p-4">
-  <AddForm/>
+    <AddForm />
   </div>
   <ResponseList />
 </div>

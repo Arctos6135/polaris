@@ -5,7 +5,7 @@
 </script>
 
 {#if $form && $response}
-  <FormFlow/>
+  <FormFlow />
 {:else}
   <FormsList />
 {/if}

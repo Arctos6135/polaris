@@ -28,22 +28,14 @@
   <form class="modal-form">
     <label>
       <span>Match</span>
-      <input
-        type="text"
-        bind:value={formData.match}
-        required
-      />
+      <input type="text" bind:value={formData.match} required />
       {#if formData.match == undefined}
         <span class="color-error">Need to choose a match</span>
       {/if}
     </label>
     <label>
       <span>Team</span>
-      <input
-        type="text"
-        bind:value={formData.team}
-        required
-      />
+      <input type="text" bind:value={formData.team} required />
       {#if formData.team == undefined}
         <span class="color-error">Need to choose a team</span>
       {/if}

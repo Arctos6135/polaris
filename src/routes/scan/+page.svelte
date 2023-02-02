@@ -11,7 +11,7 @@
       (result) => {
         if (!$form) return;
         try {
-        console.log(result.data)
+          console.log(result.data);
           const [responseIDString, match, team, scoutName, serializedResponse] =
             result.data.split(";");
           const responseID = parseInt(responseIDString);
@@ -38,8 +38,8 @@
     qrScanner.start();
   });
   onDestroy(() => {
-    qrScanner.stop()
-  })
+    qrScanner.stop();
+  });
   let qrScanner: QrScanner;
 </script>
 

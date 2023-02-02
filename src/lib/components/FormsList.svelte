@@ -1,13 +1,13 @@
 <script lang="ts">
-    import { goto } from "$app/navigation";
+  import { goto } from "$app/navigation";
 
   import { deleteResponse, submitResponse } from "$lib/actions";
 
   import { activeResponses, response } from "$lib/store";
   const setResponse = (id: number) => {
     $response = id;
-    goto("/form")
-  }
+    goto("/form");
+  };
 
   $: responses = Object.values($activeResponses);
 </script>
@@ -19,7 +19,9 @@
     {#each responses as response (response.id)}
       <li>
         <span class="flex-auto">
-          <button on:click={() => setResponse(response.id)}>Match: {response.match} Team: {response.team}</button>
+          <button on:click={() => setResponse(response.id)}
+            >Match: {response.match} Team: {response.team}</button
+          >
         </span>
         <span>
           <button
