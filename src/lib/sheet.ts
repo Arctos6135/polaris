@@ -31,6 +31,7 @@ export const append = async (responseQueue: Response[]) => {
           response.team,
           response.match,
           response.scout,
+          response.alliance,
           ...Object.values(response.data),
           response.id,
         ])

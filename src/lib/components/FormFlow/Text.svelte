@@ -22,4 +22,8 @@
   }
 </script>
 
-<input type="text" bind:value={$activeResponses[id].data[component.id]} />
+<input
+  class="rounded-md bg-background text-text border-2 border-text/30"
+  type="text"
+  bind:value={$activeResponses[id].data[component.id]}
+/>

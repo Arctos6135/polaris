@@ -50,14 +50,19 @@
   {/if}
   <div>
     {#if intervalRef}
-      <button class="btn btn-outline-error" on:click={stopTimer}>Stop</button>
+      <button
+        class="rounded-md p-2 shadow-sm border-2 bg-error/50 border-error hover:bg-error/40 text-text/80"
+        on:click={stopTimer}>Stop</button
+      >
     {:else}
-      <button class="btn btn-outline-success" on:click={startTimer}
-        >Start</button
+      <button
+        class="rounded-md p-2 shadow-sm border-2 bg-success/50 border-success hover:bg-success/40 text-text/80"
+        on:click={startTimer}>Start</button
       >
     {/if}
-    <button class="btn btn-outline-surface ml-2" on:click={restartTimer}
-      >Reset</button
+    <button
+      class="rounded-md p-2 shadow-sm border-2 bg-primary/50 border-primary hover:bg-primary/40 text-text/80"
+      on:click={restartTimer}>Reset</button
     >
   </div>
 </div>

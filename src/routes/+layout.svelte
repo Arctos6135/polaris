@@ -1,9 +1,8 @@
 <script>
   import "../app.postcss";
-  import { responseQueue, lastGet } from "$lib/store";
+  import { responseQueue, lastGet, theme } from "$lib/store";
   import { onMount } from "svelte";
   import { pwaInfo } from "virtual:pwa-info";
-  import BottomBar from "$lib/components/BottomBar.svelte";
   import { append, get } from "$lib/sheet";
 
   onMount(async () => {
@@ -45,19 +44,23 @@
   });
 
   $: webManifest = pwaInfo ? pwaInfo.webManifest.linkTag : "";
+  const themes = ["dark", "light"];
 </script>
 
 <svelte:head>
   {@html webManifest}
 </svelte:head>
-<div class="flex flex-col h-full">
-  <div class="flex">
-    <strong class="text-2xl">Polaris</strong>
-    <a class="btn btn-md" href="/">Home</a>
-    <a class="btn btn-base" href="/scan">Scan QR</a>
+<div data-theme={$theme} class="flex flex-col h-full bg-background">
+  <div class="flex items-center bg-background">
+    <a href="/" class="text-2xl font-bold ml-2 text-text">Polaris</a>
+    <a class="text-lg ml-4 text-text" href="/scan">Scan QR</a>
+    <select class="bg-background text-text rounded-md m-2" bind:value={$theme}
+      >{#each themes as theme}<option value={theme}>{theme}</option
+        >{/each}</select
+    >
   </div>
+  <hr class="w-full text-text/80" />
   <div class="flex-grow">
     <slot />
   </div>
-  <BottomBar />
 </div>

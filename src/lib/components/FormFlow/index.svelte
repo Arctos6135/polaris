@@ -49,13 +49,15 @@
       {/each}
     </div>
     <div
-      class="flex justify-center absolute bottom-0 w-full py-4 bg-surface-200-700-token"
+      class="flex justify-center gap-4 absolute bottom-0 w-full py-4 bg-surface-200-700-token"
     >
-      <button class="btn btn-filled-error" on:click={deleteResponse}
-        >Delete</button
+      <button
+        class="rounded-md p-2 shadow-sm border-2 bg-error/50 border-error hover:bg-error/40 text-text/80"
+        on:click={deleteResponse}>Delete</button
       >
-      <button class="btn btn-filled-success ml-2" on:click={submitResponse}
-        >Submit</button
+      <button
+        class="rounded-md p-2 shadow-sm border-2 bg-success/50 border-success hover:bg-success/40 text-text/80"
+        on:click={submitResponse}>Submit</button
       >
     </div>
   </form>

@@ -14,3 +14,4 @@ export const activeResponses = persisted<Record<number, Response>>(
 export const responseQueue = persisted<Response[]>("responseQueue", []);
 export const lastGet = persisted("lastGet", 0);
 export const online = writable(true);
+export const theme = persisted("theme", "dark");

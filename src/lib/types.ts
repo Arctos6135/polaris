@@ -4,6 +4,7 @@ export type Response = {
   match: number;
   team: number;
   scout: string;
+  alliance: "RED" | "BLUE";
 };
 export type Num = {
   type: "num";

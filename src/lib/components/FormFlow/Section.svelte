@@ -10,5 +10,5 @@
   <Group {group} />
 {/each}
 {#if timer?.type === "group"}
-  <div class="card absolute" use:draggable><Group group={timer} /></div>
+  <div class="bg-secondary absolute" use:draggable><Group group={timer} /></div>
 {/if}

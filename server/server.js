@@ -47,7 +47,7 @@ function doGet() {
     response.config = config.getRange("F1:BG10").getDisplayValues();
     response.matches = events.getRange("D32:K187").getValues();
     response.teams = events
-      .getRange("D32:S")
+      .getRange("R32:S")
       .getValues()
       .filter((lst) => lst[0] != "");
 

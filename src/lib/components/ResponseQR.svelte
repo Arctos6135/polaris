@@ -40,7 +40,7 @@
 </script>
 
 <svg
-  class="w-max md:w-auto md:h-1/2 m-4 h-auto"
+  class="w-max md:w-auto md:h-[70vh] m-4 h-auto"
   viewBox={`0 0 ${qr.length} ${qr.length}`}
   shape-rendering="crispEdges"
 >

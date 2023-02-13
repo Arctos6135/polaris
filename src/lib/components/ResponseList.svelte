@@ -8,14 +8,16 @@
   };
 </script>
 
-<div class="card p-4">
-  <span class="text-2xl">Forms</span>
-  <hr />
-  <ul class="list">
+<div class="p-4">
+  <span class="text-2xl text-text">Responses</span>
+  <hr class="text-text/50" />
+  <ul class="">
     {#each $responseQueue as response (response.id)}
       <li>
         <span class="flex-auto">
-          <button on:click={() => setCode(response.id)}
+          <button
+            on:click={() => setCode(response.id)}
+            class="text-secondary hover:text-primary"
             >Match: {response.match} Team: {response.team}</button
           >
         </span>
