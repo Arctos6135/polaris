@@ -53,14 +53,22 @@
 <div data-theme={$theme} class="flex flex-col h-full bg-background">
   <div class="flex items-center bg-background">
     <a href="/" class="text-2xl font-bold ml-2 text-text">Polaris</a>
-    <a class="text-lg ml-4 text-text" href="/scan">Scan QR</a>
-    <select class="bg-background text-text rounded-md m-2" bind:value={$theme}
-      >{#each themes as theme}<option value={theme}>{theme}</option
-        >{/each}</select
-    >
+    <div class="ml-auto flex gap-2">
+      <a
+        class="bg-primary my-2 px-2 text-white hover:bg-primary/90 rounded-md shadow-sm inline-flex items-center justify-center"
+        href="/scan">Scan QR</a
+      >
+      <button
+        class="bg-primary my-2 px-2 text-white hover:bg-primary/90 rounded-md shadow-sm"
+        on:click={get}>Get Data</button
+      >
+      <select class="bg-background text-text rounded-md m-2" bind:value={$theme}
+        >{#each themes as theme}<option value={theme}>{theme}</option
+          >{/each}</select
+      >
+    </div>
   </div>
-  <hr class="w-full text-text/80" />
-  <div class="flex-grow">
+  <div class="flex-grow bg-background">
     <slot />
   </div>
 </div>

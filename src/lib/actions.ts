@@ -16,3 +16,14 @@ export const submitResponse = (id: number) => {
   responseQueue.set([...get(responseQueue), res]);
   response.set(null);
 };
+
+export function unsubmitResponse(id: number) {
+  const response = get(responseQueue).find((response) => response.id === id);
+  if (!response) return;
+  responseQueue.set(
+    get(responseQueue).filter((response) => response.id !== id)
+  );
+  const responses = get(activeResponses);
+  responses[id] = response;
+  activeResponses.set(responses);
+}

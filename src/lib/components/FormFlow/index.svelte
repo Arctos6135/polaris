@@ -41,7 +41,7 @@
       id: section.id,
     }))}
   />
-  <form class="mt-4 h-full">
+  <form class="mt-4">
     <div>
       {#each $form.sections as section}
         {#if section.id == tab}

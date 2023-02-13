@@ -21,7 +21,6 @@
       };
       match = "";
       team = "";
-      scout = "";
     }
   }
   $: matchTeams = Object.values($teams).filter(
@@ -76,7 +75,7 @@
     {/if}
   </div>
   <button
-    class="bg-primary rounded-md p-2 text-white shadow-sm hover:bg-primary/90 disabled:bg-primary/50"
+    class="bg-primary rounded-md p-2 text-white shadow-sm hover:bg-primary/90 disabled:bg-primary/30"
     disabled={error}
     on:click={onFormSubmit}>Create</button
   >

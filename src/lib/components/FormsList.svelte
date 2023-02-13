@@ -17,7 +17,7 @@
   <hr class="text-text/50" />
   <ul class="mt-2">
     {#each responses as response (response.id)}
-      <li class="flex">
+      <li class="flex mt-1">
         <span class="flex-auto">
           <button
             on:click={() => setResponse(response.id)}

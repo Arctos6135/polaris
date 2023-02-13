@@ -4,7 +4,7 @@
   import ResponseList from "$lib/components/ResponseList.svelte";
 </script>
 
-<div class="container flex flex-col space-y-4 mt-4 mx-auto h-full">
+<div class="container flex flex-col space-y-4 mt-4 mx-auto">
   <FormsList />
   <div class="card p-4">
     <AddForm />
