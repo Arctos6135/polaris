@@ -5,7 +5,7 @@
   import Tabs from "../Tabs.svelte";
   import Section from "./Section.svelte";
 
-  setContext("id", $response);
+  $: setContext("id", $response);
 
   let tab = $form?.sections[0].id as string;
 
@@ -17,6 +17,7 @@
     $responseQueue = $responseQueue.filter(
       (response) => response.id != $response
     );
+    $response = null;
     goto("/", { replaceState: true });
   };
 

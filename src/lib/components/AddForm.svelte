@@ -34,7 +34,7 @@
 
 <div class="space-y-4">
   <div class="flex flex-col">
-    <label class="text-text">Match</label>
+    <span class="text-text">Match</span>
     <select
       class="rounded-md bg-background text-text border-2"
       bind:value={match}
@@ -49,7 +49,7 @@
     {/if}
   </div>
   <div class="flex flex-col">
-    <label class="text-text">Team</label>
+    <span class="text-text">Team</span>
     <select
       class="rounded-md bg-background text-text border-2"
       bind:value={team}
@@ -64,7 +64,7 @@
     {/if}
   </div>
   <div class="flex flex-col">
-    <label class="text-text">Scout Name</label>
+    <span class="text-text">Scout Name</span>
     <input
       class="rounded-md bg-background text-text border-2"
       type="text"

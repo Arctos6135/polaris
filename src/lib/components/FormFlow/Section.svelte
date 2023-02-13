@@ -6,9 +6,11 @@
   $: timer = section.groups.find((group) => group.component.type === "timer");
 </script>
 
-{#each section.groups.filter((group) => !(group === timer)) as group (group)}
-  <Group {group} />
-{/each}
+<div class="flex flex-col">
+  {#each section.groups.filter((group) => !(group === timer)) as group (group)}
+    <Group {group} />
+  {/each}
+</div>
 {#if timer?.type === "group"}
   <div class="bg-secondary absolute" use:draggable><Group group={timer} /></div>
 {/if}

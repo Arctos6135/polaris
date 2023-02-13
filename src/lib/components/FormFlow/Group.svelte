@@ -20,7 +20,7 @@
 </script>
 
 <div class="m-3 flex flex-col">
-  <span>{group.label}</span>
+  <span class="text-text">{group.label}</span>
   <Component bind:error {component} />
   <span class="text-error">{error || ""}</span>
 </div>

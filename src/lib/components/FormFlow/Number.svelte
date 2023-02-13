@@ -27,9 +27,9 @@
   }
 </script>
 
-<div class="flex">
+<div class="flex w-full">
   <button
-    class="bg-error text-white rounded-l-md px-3"
+    class="bg-error text-white rounded-l-md px-4"
     on:click={() =>
       ($activeResponses[id].data[component.id] = Number.isInteger(value)
         ? parseInt(value.toString()) - 1
@@ -38,10 +38,10 @@
   <input
     type="number"
     bind:value={$activeResponses[id].data[component.id]}
-    class="bg-background border-y-2 border-x-0 border-text/30 text-text"
+    class="bg-background w-full border-y-2 border-x-0 border-text/30 text-text"
   />
   <button
-    class="bg-success text-white rounded-r-md px-3"
+    class="bg-success text-white rounded-r-md px-4"
     on:click={() =>
       ($activeResponses[id].data[component.id] = Number.isInteger(value)
         ? parseInt(value.toString()) + 1

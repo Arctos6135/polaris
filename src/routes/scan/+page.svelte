@@ -1,7 +1,7 @@
 <script lang="ts">
   import QrScanner from "qr-scanner";
   import { onDestroy, onMount } from "svelte";
-  import { form, responseQueue } from "$lib/store";
+  import { form, responseQueue, matches } from "$lib/store";
   import { deserialize } from "$lib/serialize";
   import type { Response } from "$lib/types";
   let video: HTMLVideoElement;
@@ -22,6 +22,11 @@
             match: parseInt(match),
             team: parseInt(team),
             scout: scoutName,
+            alliance: $matches[parseInt(match)]?.red_alliance.includes(
+              parseInt(team)
+            )
+              ? "RED"
+              : "BLUE",
           };
           if (
             !$responseQueue.map((response) => response.id).includes(responseID)
