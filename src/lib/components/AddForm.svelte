@@ -24,42 +24,41 @@
       scout = "";
     }
   }
+  $: matchTeams = Object.values($teams).filter(
+    (team) =>
+      $matches[parseInt(match)]?.red_alliance.includes(team.number) ||
+      $matches[parseInt(match)]?.blue_alliance.includes(team.number)
+  );
   $: error = team == "" || match == "" || scout == "";
 </script>
 
 <div class="space-y-4">
   <div class="flex flex-col">
     <label class="text-text">Match</label>
-    <input
+    <select
       class="rounded-md bg-background text-text border-2"
-      type="text"
       bind:value={match}
-      list="matches"
       required
-    />
-    <datalist id="matches">
+    >
       {#each Object.values($matches) as match (match.number)}
-        <option value={match.number} />
+        <option value={match.number}>{match.number}</option>
       {/each}
-    </datalist>
+    </select>
     {#if match == ""}
       <div class="text-error">Need to choose a match</div>
     {/if}
   </div>
   <div class="flex flex-col">
     <label class="text-text">Team</label>
-    <input
+    <select
       class="rounded-md bg-background text-text border-2"
-      type="text"
       bind:value={team}
-      list="teams"
       required
-    />
-    <datalist id="teams">
-      {#each Object.values($teams) as team (team.number)}
-        <option value={team.number} />
+    >
+      {#each matchTeams as team (team.number)}
+        <option value={team.number}>{team.number}</option>
       {/each}
-    </datalist>
+    </select>
     {#if team == ""}
       <div class="text-error">Need to choose a team</div>
     {/if}
