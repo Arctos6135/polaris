@@ -42,9 +42,9 @@
     qrScanner.start();
   });
   onDestroy(() => {
-    qrScanner.stop();
+    qrScanner?.stop();
   });
-  let qrScanner: QrScanner;
+  let qrScanner: QrScanner | undefined;
 </script>
 
 <!-- svelte-ignore a11y-media-has-caption -->

@@ -9,7 +9,6 @@ const config = {
       strategies: "injectManifest",
       filename: "sw.ts",
       srcDir: "src",
-      kit: { adapterFallback: "index.html" },
       manifest: {},
     }),
   ],
