@@ -11,11 +11,7 @@
       registerSW({
         immediate: true,
         onRegistered(r) {
-          r &&
-            setInterval(() => {
-              console.log("Checking for sw update");
-              r.update();
-            }, 1000 * 60 * 60 * 60);
+          r && r.update();
           console.log(`SW Registered: ${r}`);
         },
         onRegisterError(error) {
