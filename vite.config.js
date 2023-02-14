@@ -10,8 +10,8 @@ const config = {
       filename: "sw.ts",
       srcDir: "src",
       manifest: {
-        short_name: "Scouting App",
-        name: "Arctos Scouting Web App",
+        short_name: "Polaris",
+        name: "Polaris Scouting App",
         icons: [
           {
             src: "icon-72x72.png",
