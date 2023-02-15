@@ -40,7 +40,7 @@
   });
 
   $: webManifest = pwaInfo ? pwaInfo.webManifest.linkTag : "";
-  const themes = ["dark", "light"];
+  const themes = ["arctos", "arctos light"];
 </script>
 
 <svelte:head>
