@@ -3,7 +3,7 @@
 
   import { deleteResponse, submitResponse } from "$lib/actions";
 
-  import { activeResponses, response } from "$lib/store";
+  import { activeResponses, errors, response } from "$lib/store";
   const setResponse = (id: number) => {
     $response = id;
     goto("/form");
@@ -31,7 +31,8 @@
             on:click={() => deleteResponse(response.id)}>Delete</button
           >
           <button
-            class="rounded-md px-1 shadow-sm border-2 bg-success/50 border-success hover:bg-success/30 text-text/80"
+            class="rounded-md px-1 shadow-sm border-2 bg-success/50 border-success hover:bg-success/30 text-text/80 disabled:bg-success/10 disabled:border-success/40"
+            disabled={$errors[response.id]}
             on:click={() => submitResponse(response.id)}>Submit</button
           >
         </span>

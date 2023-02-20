@@ -1,7 +1,7 @@
 <script lang="ts">
   import QrScanner from "qr-scanner";
   import { onDestroy, onMount } from "svelte";
-  import { form, responseQueue, matches } from "$lib/store";
+  import { form, responseQueue, matches, scans } from "$lib/store";
   import { deserialize } from "$lib/serialize";
   import type { Response } from "$lib/types";
   let video: HTMLVideoElement;
@@ -31,9 +31,13 @@
               : "BLUE",
           };
           if (
-            !$responseQueue.map((response) => response.id).includes(responseID)
+            !$responseQueue
+              .map((response) => response.id)
+              .includes(responseID) &&
+            !$scans.includes(responseID)
           ) {
             $responseQueue = [...$responseQueue, response];
+            $scans = [...$scans, responseID];
             message = `team ${team}: match ${match} by ${scout}`;
             success = true;
           }

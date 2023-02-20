@@ -16,7 +16,7 @@
     toggle: Toggle,
   };
   let Component = components[group.component.type];
-  let error: string | undefined;
+  export let error: string | undefined;
 </script>
 
 <div class="m-3 flex flex-col">

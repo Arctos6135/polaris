@@ -46,20 +46,11 @@ const serializers: {
   },
 };
 
-function extractGroups(schema: Section[]): Group[] {
+export function extractGroups(schema: Section[]) {
   const groups: Group[] = [];
-  const processGroup = (group: Group) => {
-    groups.push(group);
-  };
-
-  const processSection = (section: Section) => {
-    for (const g of section.groups) {
-      processGroup(g);
-    }
-  };
-
-  for (const section of schema) processSection(section);
-
+  schema.forEach((section) =>
+    section.groups.forEach((group) => groups.push(group))
+  );
   return groups;
 }
 
@@ -68,16 +59,15 @@ export function serialize(
   schema: Section[]
 ) {
   let out = 0n;
-  const processGroup = (group: Group) => {
+  extractGroups(schema).forEach((group) => {
     const serialize = serializers[group.component.type];
     out = serialize(
-      data[group.component.id] as never,
+      data[group.component.id] as any,
       out,
       group.component as never
     );
-  };
+  });
 
-  extractGroups(schema).forEach(processGroup);
   return out;
 }
 
@@ -131,18 +121,15 @@ const deserializers: {
   },
 };
 export function deserialize(data: bigint, schema: Section[]) {
-  const groups = extractGroups(schema);
-  groups.reverse();
   const out: { [key: string]: number | string } = {};
-
-  const processGroup = (group: Group) => {
-    const deserialize = deserializers[group.component.type];
-    const res = deserialize(data, group.component as never);
-    out[group.component.id] = res.data;
-    data = res.remaining;
-  };
-
-  groups.forEach(processGroup);
+  extractGroups(schema)
+    .reverse()
+    .forEach((group) => {
+      const deserialize = deserializers[group.component.type];
+      const res = deserialize(data, group.component as never);
+      out[group.component.id] = res.data;
+      data = res.remaining;
+    });
 
   return out;
 }

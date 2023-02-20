@@ -37,7 +37,7 @@
         sync();
       }, 6000);
     }
-    sync();
+    // sync();
   });
 
   $: webManifest = pwaInfo ? pwaInfo.webManifest.linkTag : "";
@@ -56,13 +56,15 @@
     <div class="ml-auto flex gap-2">
       <a
         class="bg-primary my-2 px-2 text-white hover:bg-primary/90 rounded-md shadow-sm inline-flex items-center justify-center"
-        href="/scan">Scan QR</a
+        href="/scan">Scan</a
       >
       <button
         class="bg-primary my-2 px-2 text-white hover:bg-primary/90 rounded-md shadow-sm"
-        on:click={get}>Get Data</button
+        on:click={get}>Sync</button
       >
-      <select class="bg-background text-text rounded-md m-2" bind:value={$theme}
+      <select
+        class="bg-background text-text rounded-md my-2 mr-2"
+        bind:value={$theme}
         >{#each themes as theme}<option value={theme}>{theme}</option
           >{/each}</select
       >

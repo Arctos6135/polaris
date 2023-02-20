@@ -1,7 +1,6 @@
 <script lang="ts">
-  import { activeResponses, teams, matches } from "$lib/store";
+  import { activeResponses, teams, matches, scout, errors } from "$lib/store";
   import { randomID } from "$lib/id";
-  let scout = "";
   let team = "";
   let match = "";
   function onFormSubmit() {
@@ -10,7 +9,7 @@
       $activeResponses[id] = {
         data: {},
         id: id,
-        scout: scout,
+        scout: $scout,
         team: parseInt(team),
         match: parseFloat(match),
         alliance: $matches[parseInt(match)]?.red_alliance.includes(
@@ -19,6 +18,7 @@
           ? "RED"
           : "BLUE",
       };
+      $errors[id] = true;
       match = "";
       team = "";
     }
@@ -28,7 +28,7 @@
       $matches[parseInt(match)]?.red_alliance.includes(team.number) ||
       $matches[parseInt(match)]?.blue_alliance.includes(team.number)
   );
-  $: error = team == "" || match == "" || scout == "";
+  $: error = team == "" || match == "" || $scout == "";
 </script>
 
 <div class="space-y-4">
@@ -67,10 +67,10 @@
     <input
       class="rounded-md bg-background text-text border-2"
       type="text"
-      bind:value={scout}
+      bind:value={$scout}
       required
     />
-    {#if scout == ""}
+    {#if $scout == ""}
       <div class="text-error">Scout needs a name</div>
     {/if}
   </div>
