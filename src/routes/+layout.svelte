@@ -37,7 +37,7 @@
         sync();
       }, 6000);
     }
-    // sync();
+    sync();
   });
 
   $: webManifest = pwaInfo ? pwaInfo.webManifest.linkTag : "";
