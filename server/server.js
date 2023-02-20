@@ -45,7 +45,10 @@ function doGet() {
       .getDisplayValues()
       .filter((lst) => lst[0] != "");
     response.config = config.getRange("F1:BG10").getDisplayValues();
-    response.matches = events.getRange("D32:K187").getValues();
+    response.matches = events
+      .getRange("D32:K187")
+      .getValues()
+      .filter((lst) => lst[0] != "");
     response.teams = events
       .getRange("R32:S")
       .getValues()
