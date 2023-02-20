@@ -2,6 +2,7 @@
   import "../app.postcss";
   import { responseQueue, lastGet, theme } from "$lib/store";
   import { onMount } from "svelte";
+  import { page } from "$app/stores";
   import { pwaInfo } from "virtual:pwa-info";
   import { append, get } from "$lib/sheet";
 
@@ -36,7 +37,7 @@
         sync();
       }, 6000);
     }
-    sync();
+    // sync();
   });
 
   $: webManifest = pwaInfo ? pwaInfo.webManifest.linkTag : "";
@@ -46,7 +47,10 @@
 <svelte:head>
   {@html webManifest}
 </svelte:head>
-<div data-theme={$theme} class="flex flex-col h-full bg-background">
+<div
+  data-theme={$page.url.pathname.endsWith("code") ? "arctos light" : $theme}
+  class="flex flex-col h-full bg-background"
+>
   <div class="flex items-center bg-background">
     <a href="/" class="text-2xl font-bold ml-2 text-text">Polaris</a>
     <div class="ml-auto flex gap-2">

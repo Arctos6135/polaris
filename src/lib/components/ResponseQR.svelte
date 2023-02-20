@@ -39,6 +39,9 @@
   }
 </script>
 
+<span class="text-xl text-text w-full text-center">
+  Team {response.team}: Match {response.match}</span
+>
 <svg
   class="w-max md:w-auto md:h-[70vh] m-4 h-auto"
   viewBox={`0 0 ${qr.length} ${qr.length}`}

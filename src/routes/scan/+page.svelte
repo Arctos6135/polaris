@@ -5,13 +5,15 @@
   import { deserialize } from "$lib/serialize";
   import type { Response } from "$lib/types";
   let video: HTMLVideoElement;
+  let message: string | undefined;
+  let success: boolean;
   onMount(() => {
     qrScanner = new QrScanner(
       video,
       (result) => {
         if (!$form) return;
         try {
-          const [responseIDString, match, team, scoutName, serializedResponse] =
+          const [responseIDString, match, team, scout, serializedResponse] =
             result.data.split(";");
           const responseID = parseInt(responseIDString);
           if (!form) return;
@@ -21,7 +23,7 @@
             id: responseID,
             match: parseInt(match),
             team: parseInt(team),
-            scout: scoutName,
+            scout: scout,
             alliance: $matches[parseInt(match)]?.red_alliance.includes(
               parseInt(team)
             )
@@ -32,9 +34,15 @@
             !$responseQueue.map((response) => response.id).includes(responseID)
           ) {
             $responseQueue = [...$responseQueue, response];
+            message = `team ${team}: match ${match} by ${scout}`;
+            success = true;
           }
         } catch (err) {
           console.error(err);
+          message = "could not scan QR code try again";
+          success = false;
+        } finally {
+          setTimeout(() => (message = undefined), 5000);
         }
       },
       { highlightScanRegion: true }
@@ -48,4 +56,13 @@
 </script>
 
 <!-- svelte-ignore a11y-media-has-caption -->
-<video bind:this={video} />
+<div class="flex justify-center">
+  <video bind:this={video} />
+</div>
+{#if message}
+  <div
+    class="text-xl w-full text-center {success ? 'text-success' : 'text-error'}"
+  >
+    {message}
+  </div>
+{/if}
