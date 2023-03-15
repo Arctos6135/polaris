@@ -1,0 +1,107 @@
+<script lang="ts">
+  import type { Grid } from "$lib/types";
+  import { activeResponses } from "$lib/store";
+  import { getContext, onMount } from "svelte";
+  import Cone from "./Cone.svelte";
+  import Cube from "./Cube.svelte";
+  import Hybrid from "./Hybrid.svelte";
+  import { persisted } from "svelte-local-storage-store";
+  onMount(() => {
+    group.components.forEach((component) => {
+      $activeResponses[id].data[component.id] ??= 0;
+    });
+    if ($field == null) {
+      const low: { type: "cone" | "cube" | undefined }[] = [];
+      let lowCone = $activeResponses[id].data[places.lowCone] as number;
+      let lowCube = $activeResponses[id].data[places.lowCube] as number;
+      while (lowCone > 0) {
+        low.push({ type: "cone" });
+        lowCone--;
+      }
+      while (lowCube > 0) {
+        low.push({ type: "cube" });
+        lowCube--;
+      }
+      while (low.length < 9) {
+        low.push({ type: undefined });
+      }
+      $field = {
+        high: postitions.map((pos) => ({
+          type: pos[0],
+          toggled:
+            $activeResponses[id].data[
+              pos[0] == "cone" ? places.highCone : places.highCube
+            ] >= pos[1],
+        })),
+        mid: postitions.map((pos) => ({
+          type: pos[0],
+          toggled:
+            $activeResponses[id].data[
+              pos[0] == "cone" ? places.midCone : places.midCube
+            ] >= pos[1],
+        })),
+        low,
+      };
+    }
+  });
+  const id = getContext<number>("id");
+  const postitions = [
+    ["cone", 1],
+    ["cube", 1],
+    ["cone", 2],
+    ["cone", 3],
+    ["cube", 2],
+    ["cone", 4],
+    ["cone", 5],
+    ["cube", 3],
+    ["cone", 6],
+  ] as const;
+  export let group: Grid;
+  const field = persisted<{
+    high: { type: "cone" | "cube"; toggled: boolean }[];
+    mid: { type: "cone" | "cube"; toggled: boolean }[];
+    low: { type: "cone" | "cube" | undefined }[];
+  } | null>(group.id, null);
+  $: places = {
+    highCone: group.components.find(
+      (component) => component.type == "cone" && component.position == "high"
+    )!.id,
+    highCube: group.components.find(
+      (component) => component.type == "cube" && component.position == "high"
+    )!.id,
+    midCone: group.components.find(
+      (component) => component.type == "cone" && component.position == "mid"
+    )!.id,
+    midCube: group.components.find(
+      (component) => component.type == "cube" && component.position == "mid"
+    )!.id,
+    lowCone: group.components.find(
+      (component) => component.type == "cone" && component.position == "low"
+    )!.id,
+    lowCube: group.components.find(
+      (component) => component.type == "cube" && component.position == "low"
+    )!.id,
+  };
+</script>
+
+<div class="grid grid-cols-9 border border-text border-1">
+  {#if $field}
+    {#each $field.high as piece}
+      {#if piece.type == "cone"}
+        <Cone dataId={places.highCone} bind:toggled={piece.toggled} />
+      {:else}
+        <Cube dataId={places.highCube} bind:toggled={piece.toggled} />
+      {/if}
+    {/each}
+    {#each $field.mid as piece}
+      {#if piece.type == "cone"}
+        <Cone dataId={places.midCone} bind:toggled={piece.toggled} />
+      {:else}
+        <Cube dataId={places.midCube} bind:toggled={piece.toggled} />
+      {/if}
+    {/each}
+    {#each $field.low as { type }}
+      <Hybrid coneId={places.lowCone} cubeId={places.lowCube} bind:type />
+    {/each}
+  {/if}
+</div>
