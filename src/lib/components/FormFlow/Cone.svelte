@@ -14,7 +14,7 @@
   class="bg-background aspect-square border border-text border-separate"
   on:click={toggle}
 >
-  <div class="cone w-full h-full {toggled ? 'bg-[yellow]' : ''}" />
+  <div class="cone w-full h-full {toggled ? 'bg-[yellow]' : 'bg-text'}" />
 </button>
 
 <style>

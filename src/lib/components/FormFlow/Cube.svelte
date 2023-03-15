@@ -14,7 +14,7 @@
   class="bg-background aspect-square border border-text border-separate"
   on:click={toggle}
 >
-  <div class="cube rounded-lg {toggled ? 'bg-[blue]' : ''}" />
+  <div class="cube rounded-lg {toggled ? 'bg-[blue]' : 'bg-text'}" />
 </button>
 
 <style>
