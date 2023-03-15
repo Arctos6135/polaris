@@ -61,7 +61,7 @@
       id: section.id,
     }))}
   />
-  <form class="mt-4">
+  <div class="mt-3">
     <div>
       {#each $form.sections as section}
         <div class:hidden={!(section.id == tab)}>
@@ -70,7 +70,7 @@
       {/each}
     </div>
     <div
-      class="flex justify-center gap-4 absolute bottom-0 w-full py-4 bg-surface-200-700-token"
+      class="flex justify-center gap-4 bottom-0 w-full pb-4 pt-2 bg-surface-200-700-token"
     >
       <button
         class="rounded-md p-2 shadow-sm border-2 bg-error/50 border-error hover:bg-error/40 text-text/80"
@@ -82,5 +82,5 @@
         on:click={submitResponse}>Submit</button
       >
     </div>
-  </form>
+  </div>
 {/if}

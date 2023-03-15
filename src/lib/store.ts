@@ -13,23 +13,10 @@ export const activeResponses = persisted<Record<number, Response>>(
   "activeResponses",
   {}
 );
+export const keys = persisted<string[]>("keys", []);
 export const scans = persisted<number[]>("scans", []);
 export const responseQueue = persisted<Response[]>("responseQueue", []);
 export const lastGet = persisted("lastGet", 0);
 export const online = writable(true);
 export const theme = persisted("theme", "arctos");
-// export const defaultData = derived(form, (form) => {
-//   if (!form) return {};
-//   const data = {};
-// });
 export const errors = persisted<Record<number, boolean>>("errors", {});
-// export const errors = derived(activeResponses, (responses) => {
-//   const sections = get(form)?.sections;
-//   if (!sections) return {};
-//   const errors: Record<number, Record<string, string | undefined>> = {};
-//   Object.values(responses).forEach((response) => {
-//     extractGroups(sections).forEach((group) => {
-//       const component = group.component;
-//     });
-//   });
-// });

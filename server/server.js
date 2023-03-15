@@ -31,6 +31,7 @@ function doGet() {
     const response = {
       success: true,
       sections: [],
+      groups: [],
       options: [],
       config: [],
       matches: [],
@@ -41,10 +42,14 @@ function doGet() {
       .getDisplayValues()
       .filter((lst) => lst[0] != "");
     response.options = config
-      .getRange(`BH2:${columnToLetter(config.getLastColumn())}`)
+      .getRange(`BL2:${columnToLetter(config.getLastColumn())}`)
       .getDisplayValues()
       .filter((lst) => lst[0] != "");
-    response.config = config.getRange("F1:BG10").getDisplayValues();
+    response.groups = config
+      .getRange("BH2:BK")
+      .getDisplayValues()
+      .filter((lst) => lst[0] != "");
+    response.config = config.getRange("F1:BF13").getDisplayValues();
     response.matches = events
       .getRange("D32:K187")
       .getValues()

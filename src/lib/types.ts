@@ -45,12 +45,40 @@ export type ComponentMap = {
   timer: Timer;
   toggle: Toggle;
 };
+
 export type Component = Num | Picker | Text | Timer | Toggle;
 
-export type Group = {
-  type: "group";
+export type Input = {
+  type: "input";
   label: string;
   component: Component;
+  section: string;
+};
+
+export type GroupMap = {
+  row: Row;
+  input: Input;
+  grid: Grid;
+};
+export type Group = Row | Input | Grid;
+export type Row = {
+  id: string;
+  type: "row";
+  label: string;
+  components: Input[];
+  section: string;
+};
+export type GridSpot = {
+  type: "cube" | "cone";
+  position: "low" | "mid" | "high";
+  id: string;
+};
+
+export type Grid = {
+  id: string;
+  type: "grid";
+  label: string;
+  components: GridSpot[];
   section: string;
 };
 
@@ -58,7 +86,7 @@ export type Section = {
   type: "section";
   id: string;
   header: string;
-  groups: Array<Group>;
+  groups: Group[];
 };
 
 export type Form = {

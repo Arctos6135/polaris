@@ -1,19 +1,19 @@
-import type { Section, Group, ComponentMap } from "$lib/types";
+import type { Section, Group, ComponentMap, GroupMap } from "$lib/types";
 
-const serializers: {
+const componentSerializers: {
   [T in keyof ComponentMap]: (
     data: any,
     previous: bigint,
     component: ComponentMap[T]
   ) => bigint;
 } = {
-  num: (data: number, previous, component) => {
+  num(data: number, previous, component) {
     const min = component.min / component.increment;
     const max = component.max / component.increment;
     const intVal = Math.round((data - min) / component.increment);
     return previous * BigInt(max - min) + BigInt(intVal);
   },
-  picker: (data: string, previous, component) => {
+  picker(data: string, previous, component) {
     if (!component.options.includes(data))
       throw new TypeError("Invalid choice");
     return (
@@ -21,7 +21,7 @@ const serializers: {
       BigInt(component.options.indexOf(data))
     );
   },
-  text: (data: string, previous, component) => {
+  text(data: string, previous, component) {
     const charmap: { [key: string]: bigint } = {};
     for (let i = 0; i < component.charset.length; i++) {
       charmap[component.charset[i]] = BigInt(i);
@@ -36,13 +36,47 @@ const serializers: {
     previous += BigInt(data.length);
     return previous;
   },
-  timer: (data: number, previous, component) => {
+  timer(data: number, previous, component) {
     const max = component.max / 100;
     const intVal = Math.round(data / 100);
     return previous * BigInt(max) + BigInt(intVal);
   },
-  toggle: (data: number, previous) => {
+  toggle(data: number, previous) {
     return previous * BigInt(2) + BigInt(data);
+  },
+};
+
+const serializers: {
+  [T in keyof GroupMap]: (
+    data: { [key: string]: number | string },
+    previous: bigint,
+    group: GroupMap[T]
+  ) => bigint;
+} = {
+  input(data, previous, group) {
+    return componentSerializers[group.component.type](
+      data[group.component.id],
+      previous,
+      group.component as never
+    );
+  },
+  row(data, previous, group) {
+    group.components.forEach((component) => {
+      previous = serializers.input(data, previous, component);
+    });
+    return previous;
+  },
+  grid(data, previous, group) {
+    group.components.forEach((component) => {
+      previous = componentSerializers.num(data[component.id], previous, {
+        min: 0,
+        max: 4,
+        increment: 1,
+        type: "num",
+        id: component.id,
+      });
+    });
+    return previous;
   },
 };
 
@@ -60,18 +94,14 @@ export function serialize(
 ) {
   let out = 0n;
   extractGroups(schema).forEach((group) => {
-    const serialize = serializers[group.component.type];
-    out = serialize(
-      data[group.component.id] as any,
-      out,
-      group.component as never
-    );
+    const serialize = serializers[group.type];
+    out = serialize(data, out, group as never);
   });
 
   return out;
 }
 
-const deserializers: {
+const componentDeserializers: {
   [T in keyof ComponentMap]: (
     data: bigint,
     component: ComponentMap[T]
@@ -120,14 +150,52 @@ const deserializers: {
     };
   },
 };
+const deserializers: {
+  [T in keyof GroupMap]: (
+    data: bigint,
+    out: { [key: string]: number | string },
+    group: GroupMap[T]
+  ) => { remaining: bigint; out: { [key: string]: number | string } };
+} = {
+  input(data, out, group) {
+    const res = componentDeserializers[group.component.type](
+      data,
+      group.component as never
+    );
+    out[group.component.id] = res.data;
+    return { out, remaining: res.remaining };
+  },
+  row(data, out, group) {
+    group.components.reverse().forEach((component) => {
+      const res = deserializers.input(data, out, component);
+      out = res.out;
+      data = res.remaining;
+    });
+    return { out, remaining: data };
+  },
+  grid(data, out, group) {
+    group.components.reverse().forEach((component) => {
+      const res = componentDeserializers.num(data, {
+        min: 0,
+        max: 4,
+        increment: 1,
+        type: "num",
+        id: component.id,
+      });
+      out[component.id] = res.data;
+      data = res.remaining;
+    });
+    return { out, remaining: data };
+  },
+};
 export function deserialize(data: bigint, schema: Section[]) {
-  const out: { [key: string]: number | string } = {};
+  let out: { [key: string]: number | string } = {};
   extractGroups(schema)
     .reverse()
     .forEach((group) => {
-      const deserialize = deserializers[group.component.type];
-      const res = deserialize(data, group.component as never);
-      out[group.component.id] = res.data;
+      const deserialize = deserializers[group.type];
+      const res = deserialize(data, out, group as never);
+      out = res.out;
       data = res.remaining;
     });
 

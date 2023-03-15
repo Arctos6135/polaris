@@ -1,5 +1,16 @@
-import { form, lastGet, matches, teams } from "$lib/store";
-import type { Group, Team, Alliance, Match, Response } from "$lib/types";
+import { form, keys, lastGet, matches, teams } from "$lib/store";
+import type {
+  Group,
+  Team,
+  Alliance,
+  Match,
+  Response,
+  Input,
+  Row,
+  Grid,
+  GridSpot,
+} from "$lib/types";
+import { get as getStore } from "svelte/store";
 import { PUBLIC_API_URL } from "$env/static/public";
 
 export const get = async () => {
@@ -11,13 +22,15 @@ export const get = async () => {
       sections,
       options,
       config,
+      groups,
     }: Record<string, any[][]> = await response.json();
-    setForm(sections, config, options);
+    setForm(sections, config, options, groups);
     setMatches(match_array);
     setTeams(team_array as [number, string][]);
     lastGet.set(Date.now());
     return true;
-  } catch {
+  } catch (e) {
+    console.error(e);
     return false;
   }
 };
@@ -32,7 +45,7 @@ export const append = async (responseQueue: Response[]) => {
           response.match,
           response.scout,
           response.alliance,
-          ...Object.values(response.data),
+          ...getStore(keys).map((key) => response.data[key]),
           response.id,
         ])
       ),
@@ -49,9 +62,22 @@ export const append = async (responseQueue: Response[]) => {
 const setForm = (
   sections: string[][],
   config: string[][],
-  options: string[][]
+  options: string[][],
+  groups: string[][]
 ) => {
-  const groups: Group[] = transpose(config).map((group) => {
+  const ids: string[] = [];
+  const filled_groups: Group[] = [];
+  const empty_groups = groups.map((group) => {
+    const [id, type, label, section] = group;
+    return {
+      id,
+      type,
+      label,
+      section,
+      components: [],
+    } as Group;
+  });
+  transpose(config).forEach((component) => {
     const [
       id,
       type,
@@ -63,22 +89,76 @@ const setForm = (
       increment,
       charset,
       option,
-    ] = group;
-    return {
-      label,
-      section,
-      type: "group",
-      component: {
+      group,
+      group_id,
+      group_type,
+    ] = component;
+    ids.push(id);
+    if (group == "grid") {
+      let toAdd: Grid;
+      const emptyIndex = empty_groups.findIndex(
+        (group) => group.type == "grid" && group_id === group.id
+      );
+      if (emptyIndex != -1) {
+        toAdd = empty_groups[emptyIndex] as Grid;
+        filled_groups.push(toAdd);
+        empty_groups.splice(emptyIndex, 1);
+      } else {
+        toAdd = filled_groups.find(
+          (group) => group.type == "grid" && group_id === group.id
+        ) as Grid;
+      }
+      toAdd.components.push({
         id,
-        type,
-        default: parseInt(default_),
-        max: parseInt(max),
-        min: parseInt(min),
-        increment: parseInt(increment),
-        charset,
-        options: options.find((opt) => opt[0] == option)?.slice(1),
-      },
-    } as Group;
+        type: group_type.split(" ")[0],
+        position: group_type.split(" ")[1],
+      } as GridSpot);
+    } else if (group == "row") {
+      let toAdd: Row;
+      const emptyIndex = empty_groups.findIndex(
+        (group) => group.type == "row" && group_id === group.id
+      );
+      if (emptyIndex != -1) {
+        toAdd = empty_groups[emptyIndex] as Row;
+        filled_groups.push(toAdd);
+        empty_groups.splice(emptyIndex, 1);
+      } else {
+        toAdd = filled_groups.find(
+          (group) => group.type == "row" && group_id === group.id
+        ) as Row;
+      }
+      toAdd.components.push({
+        label,
+        section,
+        type: "input",
+        component: {
+          id,
+          type,
+          default: parseInt(default_),
+          max: parseInt(max),
+          min: parseInt(min),
+          increment: parseInt(increment),
+          charset,
+          options: options.find((opt) => opt[0] == option)?.slice(1),
+        },
+      } as Input);
+    } else {
+      filled_groups.push({
+        label,
+        section,
+        type: "input",
+        component: {
+          id,
+          type,
+          default: parseInt(default_),
+          max: parseInt(max),
+          min: parseInt(min),
+          increment: parseInt(increment),
+          charset,
+          options: options.find((opt) => opt[0] == option)?.slice(1),
+        },
+      } as Input);
+    }
   });
   form.set({
     sections: sections.map((section) => {
@@ -87,10 +167,11 @@ const setForm = (
         type: "section",
         header,
         id,
-        groups: groups.filter((group) => group.section == id),
+        groups: filled_groups.filter((group) => group.section == id),
       };
     }),
   });
+  keys.set(ids);
 };
 
 const setTeams = (team_array: [number, string][]) => {
