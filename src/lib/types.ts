@@ -107,3 +107,9 @@ export type Match = {
   red_score?: number;
   blue_score?: number;
 };
+
+export type Field = {
+  high: { type: "cone" | "cube"; toggled: boolean }[];
+  mid: { type: "cone" | "cube"; toggled: boolean }[];
+  low: { type: "cone" | "cube" | undefined }[];
+};

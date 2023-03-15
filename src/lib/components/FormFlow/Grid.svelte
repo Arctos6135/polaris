@@ -1,16 +1,18 @@
 <script lang="ts">
   import type { Grid } from "$lib/types";
-  import { activeResponses } from "$lib/store";
+  import { activeResponses, fields } from "$lib/store";
   import { getContext, onMount } from "svelte";
   import Cone from "./Cone.svelte";
   import Cube from "./Cube.svelte";
   import Hybrid from "./Hybrid.svelte";
-  import { persisted } from "svelte-local-storage-store";
   onMount(() => {
     group.components.forEach((component) => {
       $activeResponses[id].data[component.id] ??= 0;
     });
-    if ($field == null) {
+    if (!$fields[id]) {
+      $fields[id] = {};
+    }
+    if ($fields[id][group.id] == undefined) {
       const low: { type: "cone" | "cube" | undefined }[] = [];
       let lowCone = $activeResponses[id].data[places.lowCone] as number;
       let lowCube = $activeResponses[id].data[places.lowCube] as number;
@@ -25,7 +27,7 @@
       while (low.length < 9) {
         low.push({ type: undefined });
       }
-      $field = {
+      $fields[id][group.id] = {
         high: postitions.map((pos) => ({
           type: pos[0],
           toggled:
@@ -57,11 +59,6 @@
     ["cone", 6],
   ] as const;
   export let group: Grid;
-  const field = persisted<{
-    high: { type: "cone" | "cube"; toggled: boolean }[];
-    mid: { type: "cone" | "cube"; toggled: boolean }[];
-    low: { type: "cone" | "cube" | undefined }[];
-  } | null>(group.id, null);
   $: places = {
     highCone: group.components.find(
       (component) => component.type == "cone" && component.position == "high"
@@ -85,23 +82,27 @@
 </script>
 
 <div class="grid grid-cols-9 border border-text border-1">
-  {#if $field}
-    {#each $field.high as piece}
+  {#if $fields[id]?.[group.id]}
+    {#each $fields[id][group.id].high as piece}
       {#if piece.type == "cone"}
         <Cone dataId={places.highCone} bind:toggled={piece.toggled} />
       {:else}
         <Cube dataId={places.highCube} bind:toggled={piece.toggled} />
       {/if}
     {/each}
-    {#each $field.mid as piece}
+    {#each $fields[id][group.id].mid as piece}
       {#if piece.type == "cone"}
         <Cone dataId={places.midCone} bind:toggled={piece.toggled} />
       {:else}
         <Cube dataId={places.midCube} bind:toggled={piece.toggled} />
       {/if}
     {/each}
-    {#each $field.low as { type }}
-      <Hybrid coneId={places.lowCone} cubeId={places.lowCube} bind:type />
+    {#each $fields[id][group.id].low as piece}
+      <Hybrid
+        coneId={places.lowCone}
+        cubeId={places.lowCube}
+        bind:type={piece.type}
+      />
     {/each}
   {/if}
 </div>
