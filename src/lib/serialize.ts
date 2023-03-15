@@ -70,7 +70,7 @@ const serializers: {
     group.components.forEach((component) => {
       previous = componentSerializers.num(data[component.id], previous, {
         min: 0,
-        max: 4,
+        max: 9,
         increment: 1,
         type: "num",
         id: component.id,
@@ -177,7 +177,7 @@ const deserializers: {
     group.components.reverse().forEach((component) => {
       const res = componentDeserializers.num(data, {
         min: 0,
-        max: 4,
+        max: 9,
         increment: 1,
         type: "num",
         id: component.id,
