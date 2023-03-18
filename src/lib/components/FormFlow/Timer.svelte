@@ -36,7 +36,10 @@
   const onChange = (e: any) => {
     $activeResponses[id].data[component.id] = isNaN(parseFloat(e.target.value))
       ? 0
-      : Math.floor(parseFloat(e.target.value) * 1000);
+      : Math.min(
+          Math.floor(parseFloat(e.target.value) * 1000),
+          component.max - 100
+        );
   };
   $: editableTime =
     parseFloat($activeResponses[id].data[component.id].toString()) / 1000;
