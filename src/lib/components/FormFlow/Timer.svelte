@@ -14,8 +14,10 @@
     initialTime = parseInt($activeResponses[id].data[component.id].toString());
     intervalRef = setInterval(() => {
       endTime = Date.now();
-      $activeResponses[id].data[component.id] =
-        initialTime + endTime - startTime;
+      $activeResponses[id].data[component.id] = Math.min(
+        initialTime + endTime - startTime,
+        component.max - 100
+      );
     }, 100);
   };
   const stopTimer = () => {
