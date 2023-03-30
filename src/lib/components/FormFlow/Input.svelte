@@ -19,7 +19,7 @@
   export let error: string | undefined;
 </script>
 
-<div class="mx-2 mb-2 flex flex-col">
+<div class="mx-2 mb-4 flex flex-col">
   <span class="text-text">{group.label}</span>
   <Component bind:error {component} />
   <span class="text-error">{error || ""}</span>

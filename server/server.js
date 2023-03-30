@@ -42,14 +42,14 @@ function doGet() {
       .getDisplayValues()
       .filter((lst) => lst[0] != "");
     response.options = config
-      .getRange(`BL2:${columnToLetter(config.getLastColumn())}`)
+      .getRange(`BG2:${columnToLetter(config.getLastColumn())}`)
       .getDisplayValues()
       .filter((lst) => lst[0] != "");
     response.groups = config
-      .getRange("BH2:BK")
+      .getRange("BD2:BK")
       .getDisplayValues()
       .filter((lst) => lst[0] != "");
-    response.config = config.getRange("F1:BF13").getDisplayValues();
+    response.config = config.getRange("F1:BB13").getDisplayValues();
     response.matches = events
       .getRange("D32:K187")
       .getValues()

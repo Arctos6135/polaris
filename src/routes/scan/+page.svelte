@@ -65,7 +65,9 @@
 </div>
 {#if message}
   <div
-    class="text-xl w-full text-center {success ? 'text-success' : 'text-error'}"
+    class="text-xl w-full text-center {success
+      ? 'text-success'
+      : 'text-error'} fixed z-10 bottom-0"
   >
     {message}
   </div>
