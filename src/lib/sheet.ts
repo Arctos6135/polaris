@@ -1,3 +1,5 @@
+//The name and code suggests this file does the spreadsheet/server stuff
+
 import { form, keys, lastGet, matches, teams } from "$lib/store";
 import type {
   Group,
