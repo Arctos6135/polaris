@@ -41,14 +41,14 @@
   });
 
   $: webManifest = pwaInfo ? pwaInfo.webManifest.linkTag : "";
-  const themes = ["arctos", "arctos light"];
+  const themes = ["arctos", "light"];
 </script>
 
 <svelte:head>
   {@html webManifest}
 </svelte:head>
 <div
-  data-theme={$page.url.pathname.endsWith("code") ? "arctos light" : $theme}
+  data-theme={$page.url.pathname.endsWith("code") ? "light" : $theme}
   class="flex flex-col h-full bg-background"
 >
   <div class="flex items-center bg-background">
@@ -60,7 +60,7 @@
       >
       <button
         class="bg-primary my-2 px-2 text-white hover:bg-primary/90 rounded-md shadow-sm"
-        on:click={get}>Sync</button
+        on:click={get}>Get Matches</button
       >
       <select
         class="bg-background text-text rounded-md my-2 mr-2"

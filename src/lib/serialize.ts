@@ -9,7 +9,7 @@ const componentSerializers: {
 } = {
   num(data: number, previous, component) {
     const min = component.min / component.increment;
-    const max = component.max / component.increment;
+    const max = component.max / component.increment + 1;
     const intVal = Math.round((data - min) / component.increment);
     return previous * BigInt(max - min) + BigInt(intVal);
   },
@@ -37,7 +37,7 @@ const componentSerializers: {
     return previous;
   },
   timer(data: number, previous, component) {
-    const max = component.max / 100;
+    const max = component.max / 100 + 1;
     const intVal = Math.round(data / 100);
     return previous * BigInt(max) + BigInt(intVal);
   },
@@ -70,7 +70,7 @@ const serializers: {
     group.components.forEach((component) => {
       previous = componentSerializers.num(data[component.id], previous, {
         min: 0,
-        max: 10,
+        max: 9,
         increment: 1,
         type: "num",
         id: component.id,
@@ -109,7 +109,7 @@ const componentDeserializers: {
 } = {
   num: (data, component) => {
     const min = component.min / component.increment;
-    const max = component.max / component.increment;
+    const max = component.max / component.increment + 1;
     const intVal = data % BigInt(max - min);
     const val = (Number(intVal) + min) * component.increment;
     return {
@@ -141,7 +141,7 @@ const componentDeserializers: {
     };
   },
   timer: (data, component) => {
-    const max = component.max / 100;
+    const max = component.max / 100 + 1;
     const intVal = data % BigInt(max);
     const val = Number(intVal) * 100;
     return {
@@ -177,7 +177,7 @@ const deserializers: {
     group.components.reverse().forEach((component) => {
       const res = componentDeserializers.num(data, {
         min: 0,
-        max: 10,
+        max: 9,
         increment: 1,
         type: "num",
         id: component.id,

@@ -19,8 +19,8 @@
       error = "Number can't be empty";
     } else if (component.min > parseInt(num.toString())) {
       error = `Number must be at least ${component.min}`;
-    } else if (component.max - 1 < parseInt(num.toString())) {
-      error = `Number can't be higher then ${component.max - 1}`;
+    } else if (component.max < parseInt(num.toString())) {
+      error = `Number can't be higher then ${component.max}`;
     } else {
       error = undefined;
     }

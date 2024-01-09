@@ -64,7 +64,7 @@
   <div class="mt-3">
     <div>
       {#each $form.sections as section}
-        <div class:hidden={!(section.id == tab)}>
+        <div class="mx-3" class:hidden={!(section.id == tab)}>
           <Section {section} bind:errors={error[section.id]} />
         </div>
       {/each}

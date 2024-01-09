@@ -16,7 +16,7 @@
       endTime = Date.now();
       $activeResponses[id].data[component.id] = Math.min(
         initialTime + endTime - startTime,
-        component.max - 100
+        component.max
       );
     }, 100);
   };
@@ -38,10 +38,7 @@
   const onChange = (e: any) => {
     $activeResponses[id].data[component.id] = isNaN(parseFloat(e.target.value))
       ? 0
-      : Math.min(
-          Math.floor(parseFloat(e.target.value) * 1000),
-          component.max - 100
-        );
+      : Math.min(Math.floor(parseFloat(e.target.value) * 1000), component.max);
   };
   $: editableTime =
     parseFloat($activeResponses[id].data[component.id].toString()) / 1000;
