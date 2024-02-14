@@ -24,6 +24,8 @@
     if (Date.now() - $lastGet > 60 * 60 * 1000) {
       get();
     }
+
+    //Sends form to spreadsheet
     function sync() {
       setTimeout(async () => {
         if ($responseQueue.length != 0) {

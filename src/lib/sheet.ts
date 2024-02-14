@@ -15,6 +15,7 @@ import type {
 import { get as getStore } from "svelte/store";
 import { PUBLIC_API_URL } from "$env/static/public";
 
+//gets data from spreadsheet
 export const get = async () => {
   try {
     const response = await fetch(PUBLIC_API_URL);
@@ -37,6 +38,7 @@ export const get = async () => {
   }
 };
 
+//Formats app data so it can be sent to the spreadsheet
 export const append = async (responseQueue: Response[]) => {
   try {
     await fetch(PUBLIC_API_URL, {
@@ -61,6 +63,8 @@ export const append = async (responseQueue: Response[]) => {
     return false;
   }
 };
+
+//this is where the form gets set
 const setForm = (
   sections: string[][],
   config: string[][],
@@ -203,5 +207,6 @@ const setMatches = (match_array: number[][]) => {
   matches.set(match_obj);
 };
 
+//Im not really sure what this does but it is necessary for setform
 const transpose = <T>(matrix: T[][]) =>
   matrix[0].map((_, i) => matrix.map((array) => array[i]));

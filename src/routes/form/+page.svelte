@@ -5,6 +5,8 @@
 </script>
 
 {#if $form && $response}
+  <!--This should be the component that shows the actual form questions-->
+  <!--I assume its not working right now because form isn't set-->
   <FormFlow />
 {:else}
   <FormsList />
