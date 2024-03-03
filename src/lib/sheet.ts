@@ -207,6 +207,6 @@ const setMatches = (match_array: number[][]) => {
   matches.set(match_obj);
 };
 
-//Im not really sure what this does but it is necessary for setform
+//I think this just turns an array of columns into an array of rows
 const transpose = <T>(matrix: T[][]) =>
   matrix[0].map((_, i) => matrix.map((array) => array[i]));

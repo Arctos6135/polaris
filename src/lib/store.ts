@@ -30,7 +30,7 @@ export const fields = persisted<Record<number, Record<string, Field>>>(
   {}
 );
 
-//This is used for formatting responses before they are sent to the server (not quite sure how though)
+//This is used for formatting responses before they are sent to the server (order of keys)
 export const keys = persisted<string[]>("keys", []);
 
 //list of QRs that have already been scanned so they don't get scanned twice
