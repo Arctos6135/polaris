@@ -29,7 +29,7 @@
     }
   }
   let manual = false;
-  $: matchTeams = Object.values($teams).filter(
+  $: matchTeams = Object.values(Object.values($teams)).filter(
     (team) =>
       $matches[parseInt(match)]?.red_alliance.includes(team.number) ||
       $matches[parseInt(match)]?.blue_alliance.includes(team.number)
