@@ -3,10 +3,15 @@
   import { randomID } from "$lib/id";
   let team = "";
   let match = "";
+
+  //This is called onFormSubmit but its really for creating a form?
+  //I guess because youre submitting like a mini form with team and match number
   function onFormSubmit() {
     if (!error) {
+      //assigns it an ID and puts it in activeResponses
       const id = randomID();
       $activeResponses[id] = {
+        //data is an array of components by their IDs
         data: {},
         id: id,
         scout: $scout,
@@ -24,7 +29,7 @@
     }
   }
   let manual = false;
-  $: matchTeams = Object.values($teams).filter(
+  $: matchTeams = Object.values(Object.values($teams)).filter(
     (team) =>
       $matches[parseInt(match)]?.red_alliance.includes(team.number) ||
       $matches[parseInt(match)]?.blue_alliance.includes(team.number)

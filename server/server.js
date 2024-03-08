@@ -4,7 +4,7 @@ function doPost(request) {
   const sheet = SpreadsheetApp.getActiveSpreadsheet();
 
   try {
-    const output = sheet.getSheetByName("Polaris Output");
+    const output = sheet.getSheetByName("Calvera Output");
     JSON.parse(request.postData.contents).forEach((response) => {
       output.appendRow(response);
     });
